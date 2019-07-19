@@ -9,6 +9,11 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "pouch-vue": "^0.3.4",
+    "pouchdb": "^7.1.1",
+    "pouchdb-debug": "^7.1.1",
+    "pouchdb-find": "^7.1.1",
+    "pouchdb-live-find": "^0.4.0",
     "vue": "^2.6.10"
   },
   "devDependencies": {
