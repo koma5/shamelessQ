@@ -1,11 +1,12 @@
 <template>
   <div class="hello">
     <ul>
-        <li v-for="postcard in postcards">
+        <li v-for="postcard in postcards" v-bind:key="postcard._id">
             <PostcardPreview v-bind:postcard="postcard"/>
         </li>
         <li>
-            <PostcardEditForm v-bind:postcard="newPostcard" />
+            <PostcardEditForm v-if="currentEdit" v-bind:postcard="currentEdit" />
+            <button @click="newPostcard">new</button>
         </li>
     </ul>
   </div>
@@ -14,26 +15,31 @@
 <script>
 import PostcardPreview from './PostcardPreview.vue'
 import PostcardEditForm from './PostcardEditForm.vue'
+import uniqid from 'uniqid'
 
 export default {
 	name: 'Queue',
     data() {
         return {
-            newPostcard: {
-                recipient: {},
-                sender: {},
-            },
+            currentEdit: false,
         }
     },
     pouch: {
         postcards: {}
     },
     created() {
-        this.$pouch.sync('postcards', 'http://127.0.0.1:5984/postcards')
+        this.$pouch.sync('http://127.0.0.1:5984/postcards')
     }, 
     components: {
         PostcardPreview,
         PostcardEditForm
+    },
+    methods: {
+        newPostcard() {
+            var newPostcard = {"_id": uniqid(), sender: {}, recipient: {}}
+            this.$pouch.put(newPostcard)
+            this.currentEdit = newPostcard;
+        }
     }
 }
 </script>
