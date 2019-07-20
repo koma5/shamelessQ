@@ -1,7 +1,6 @@
 <template>
   <div class="postcard">
     <img v-bind:src="getImgUrl()" alt="">
-    <p> {{  }}</p>
   </div>
 </template>
 

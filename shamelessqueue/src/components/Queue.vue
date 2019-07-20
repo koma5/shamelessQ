@@ -1,8 +1,11 @@
 <template>
   <div class="hello">
-    <ul v-for="postcard in postcards">
-        <li>
+    <ul>
+        <li v-for="postcard in postcards">
             <PostcardPreview v-bind:postcard="postcard"/>
+        </li>
+        <li>
+            <PostcardEditForm v-bind:postcard="newPostcard" />
         </li>
     </ul>
   </div>
@@ -10,12 +13,16 @@
 
 <script>
 import PostcardPreview from './PostcardPreview.vue'
+import PostcardEditForm from './PostcardEditForm.vue'
 
 export default {
 	name: 'Queue',
     data() {
         return {
-            newPostcard: false
+            newPostcard: {
+                recipient: {},
+                sender: {},
+            },
         }
     },
     pouch: {
@@ -25,7 +32,8 @@ export default {
         this.$pouch.sync('postcards', 'http://127.0.0.1:5984/postcards')
     }, 
     components: {
-        PostcardPreview
+        PostcardPreview,
+        PostcardEditForm
     }
 }
 </script>
