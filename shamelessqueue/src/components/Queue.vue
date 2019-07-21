@@ -5,8 +5,8 @@
             <PostcardPreview v-bind:postcard="postcard"/>
         </li>
         <li>
-            <PostcardEditForm v-if="newPostcard" />
-            <button @click="createNewPostcard">new</button>
+            <PostcardEditForm @editDone="toggleEdit" v-if="newPostcard" />
+            <button @click="toggleEdit">new</button>
         </li>
     </ul>
   </div>
@@ -34,14 +34,9 @@ export default {
         PostcardEditForm
     },
     methods: {
-        createNewPostcard() {
-            //this.newPostcard = {"_id": uniqid(), sender: {}, recipient: {}}
-            this.newPostcard = true;
-
-            /*this.$pouch.put(newPostcard).then(() => {
-                this.currentEdit = this.postcards.find(p => p._id === newPostcard._id )
-            })*/
-        }
+        toggleEdit() {
+            this.newPostcard = !this.newPostcard;
+        },
     }
 }
 </script>

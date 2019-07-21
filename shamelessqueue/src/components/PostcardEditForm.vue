@@ -72,16 +72,7 @@ export default {
             });
             
 
-           //put doc
-            //put attachment 
-            //emit done
-
-            /* //!!pulled my hair out for this: this.$pouch.putAttachment(
-                'jyctrxn2',
-                '3-ef6e708a1a12569de9985c30c5ab26be',
-                {id: file.name, data: file, type: file.type}).catch(function (err) {});
-            */
-
+            this.$emit("editDone")
         }
     }
 }
