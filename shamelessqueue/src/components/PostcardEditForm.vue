@@ -1,12 +1,13 @@
 <template>
   <div class="postcard">
     <form v-on:submit.prevent="">
+        recipient
         <label>first name<input v-model="recipient.firstname" type="text"></label>
         <label>last name <input v-model="recipient.lastname" type="text"></label>
         <label>street<input v-model="recipient.address" type="text"></label>
         <label>city<input v-model="recipient.city" type="text"></label>
         <label>postcode<input v-model="recipient.postcode" type="text"> </label>
-
+        sender
         <label>first
             <input v-model="sender.firstname" type="text"></label>
         <label>last
@@ -59,7 +60,7 @@ export default {
                     this.$pouch.putAttachment(
                         this.id,
                         response.rev,
-                        {id: 'postcard.jpeg', data: blob, type: 'image/jpeg'}).catch(function (err) {});
+                        {id: 'postcard.jpeg', data: blob, type: 'image/jpeg'}).catch(() => {});
                 }, 'image/jpeg',0.8);
 
             });
