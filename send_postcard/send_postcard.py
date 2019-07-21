@@ -1,5 +1,5 @@
 from postcard_creator.postcard_creator import PostcardCreator, Postcard, Token, Recipient, Sender
-import schedule, time, json, requests, os
+import schedule, time, re, json, requests, os
 
 couchdb_database = 'http://192.168.1.3:5984/postcards/'
 
@@ -10,14 +10,19 @@ def run():
     postcard = create_postcard(postcard_data, picture)
     try:
         send_postcard(postcard, token)
+        scheduled_run.at(time.strftime('%H:%M:%S'))
     except Exception as e:
         if ("Limit of free postcards exceeded." in str(e)):
             handle_cooldown(e)
         else:
             print(e)
 
+
 def handle_cooldown(e):
+    time_string = re.findall(r"([0-9]{2}:[0-9]{2}:[0-9]{2})", str(e))[0]
     print(e, "le'me schedule and come back, okay?")
+    scheduled_run.at(time_string)
+    print(scheduled_run)
 
 def login():
     token = Token()
@@ -65,9 +70,9 @@ def get_postcard_picture(postcard):
     response = requests.get(couchdb_database + postcard['_id'] + '/' + attachment_id)
     return response.content
 
-
-schedule.every(10).seconds.do(run)
-run()
+scheduled_run = schedule.every().day.do(run)
+scheduled_run.run()
+print(scheduled_run)
 
 while True:
     schedule.run_pending()
