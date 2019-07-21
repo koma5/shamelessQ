@@ -1,6 +1,8 @@
 from postcard_creator.postcard_creator import PostcardCreator, Postcard, Token, Recipient, Sender
 import schedule, time, json, requests, os
 
+couchdb_database = 'http://192.168.1.3:5984/postcards/'
+
 def run():
     token = login()
     postcard_data = get_next_postcard()
@@ -54,12 +56,13 @@ def create_postcard(postcard, picture):
 
 def get_next_postcard():
     data = json.dumps({"selector": {"posted":False}})
-    response = requests.post('http://192.168.1.3:5984/postcards/_find', headers={"content-type":"application/json"}, data=data)
+    response = requests.post(couchdb_database + '_find', headers={"content-type":"application/json"}, data=data)
     result = json.loads(response.content.decode('utf-8'))
     return result['docs'][0]
 
 def get_postcard_picture(postcard):
-    response = requests.get('http://192.168.1.3:5984/postcards/jyd6ukf0/postcard.jpeg')
+    attachment_id = list(postcard['_attachments'].keys())[0]
+    response = requests.get(couchdb_database + postcard['_id'] + '/' + attachment_id)
     return response.content
 
 
