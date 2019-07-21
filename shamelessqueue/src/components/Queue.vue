@@ -5,8 +5,8 @@
             <PostcardPreview v-bind:postcard="postcard"/>
         </li>
         <li>
-            <PostcardEditForm v-if="currentEdit" v-bind:postcard="currentEdit" />
-            <button @click="newPostcard">new</button>
+            <PostcardEditForm v-if="newPostcard" />
+            <button @click="createNewPostcard">new</button>
         </li>
     </ul>
   </div>
@@ -15,13 +15,12 @@
 <script>
 import PostcardPreview from './PostcardPreview.vue'
 import PostcardEditForm from './PostcardEditForm.vue'
-import uniqid from 'uniqid'
 
 export default {
 	name: 'Queue',
     data() {
         return {
-            currentEdit: false,
+            newPostcard: false,
         }
     },
     pouch: {
@@ -35,10 +34,13 @@ export default {
         PostcardEditForm
     },
     methods: {
-        newPostcard() {
-            var newPostcard = {"_id": uniqid(), sender: {}, recipient: {}}
-            this.$pouch.put(newPostcard)
-            this.currentEdit = newPostcard;
+        createNewPostcard() {
+            //this.newPostcard = {"_id": uniqid(), sender: {}, recipient: {}}
+            this.newPostcard = true;
+
+            /*this.$pouch.put(newPostcard).then(() => {
+                this.currentEdit = this.postcards.find(p => p._id === newPostcard._id )
+            })*/
         }
     }
 }

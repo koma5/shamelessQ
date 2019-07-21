@@ -22,7 +22,7 @@ export default {
     },
     methods: {
         getAttachment() {
-            if(this.postcard._attachments) {
+            if(this.postcard._attachments && this.img == null) {
                 this.$pouch.getAttachment(
                     this.postcard._id,
                     Object.keys(this.postcard._attachments)[0])
