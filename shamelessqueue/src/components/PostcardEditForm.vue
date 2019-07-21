@@ -1,30 +1,27 @@
 <template>
   <div class="postcard">
-    <form v-on:submit.prevent="save">
+    <form v-on:submit.prevent="">
         <label>first name<input v-model="recipient.firstname" type="text"></label>
         <label>last name <input v-model="recipient.lastname" type="text"></label>
         <label>street<input v-model="recipient.address" type="text"></label>
         <label>city<input v-model="recipient.city" type="text"></label>
         <label>postcode<input v-model="recipient.postcode" type="text"> </label>
 
-        <label>first name
+        <label>first
             <input v-model="sender.firstname" type="text"></label>
-        <label>last name
+        <label>last
             <input v-model="sender.lastname" type="text"></label>
-        <label>address name
+        <label>address
             <input v-model="sender.address" type="text"></label>
-        <label>city name
+        <label>city
             <input v-model="sender.city" type="text"></label>
-        <label>postcode name
+        <label>postcode
             <input v-model="sender.postcode" type="text"></label>
 
         <label>message
             <input v-model="message" type="text"></label>
         
-        <label>picture
-            <input @change="fileSelected($event)" type="file"></label>
-
-        <button>save</button>
+        <button @click="save">save</button><button @click="cancel">cancel</button>
         <croppa v-model="postcardCroppa"></croppa>
     </form>
   </div>
@@ -48,15 +45,11 @@ export default {
         }
     },
     methods: {
-        fileSelected(event) {
-            var file = event.target.files[0]
-
-
-        },
         save() {
 
             this.$pouch.put({
                 _id: this.id,
+                posted: false,
                 sender: this.sender,
                 recipient: this.recipient,
                 message: this.message,
@@ -72,6 +65,9 @@ export default {
             });
             
 
+            this.$emit("editDone")
+        },
+        cancel() {
             this.$emit("editDone")
         }
     }

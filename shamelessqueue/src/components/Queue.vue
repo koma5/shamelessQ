@@ -24,7 +24,7 @@ export default {
         }
     },
     pouch: {
-        postcards: {}
+        postcards: { posted: false }
     },
     created() {
         this.$pouch.sync('http://127.0.0.1:5984/postcards')
