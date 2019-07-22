@@ -15,6 +15,7 @@ def run():
     try:
         send_postcard(postcard, token)
         scheduled_run.at(time.strftime('%H:%M:%S'))
+        mark_postcard_as_posted(postcard_data)
     except Exception as e:
         if ("Limit of free postcards exceeded." in str(e)):
             handle_cooldown(e)
@@ -73,6 +74,14 @@ def get_postcard_picture(postcard):
     attachment_id = list(postcard['_attachments'].keys())[0]
     response = requests.get(couchdb_database + postcard['_id'] + '/' + attachment_id)
     return response.content
+
+def mark_postcard_as_posted(postcard):
+    print(postcard)
+    postcard['posted'] = True
+    data = json.dumps(postcard)
+    response = requests.put(couchdb_database + postcard['_id'], headers={"content-type":"application/json"}, data=data)
+    print(response)
+
 
 scheduled_run = schedule.every().day.do(run)
 scheduled_run.run()
