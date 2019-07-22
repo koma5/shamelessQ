@@ -15,7 +15,8 @@ def run():
     postcard = create_postcard(postcard_data, picture)
     try:
         send_postcard(postcard, token)
-        scheduled_run.at(time.strftime('%H:%M:%S'))
+        schuedule.clear('run')
+        print(schedule.every().day.at(time.strftime('%H:%M:%S')).do(run).tag('run'))
         mark_postcard_as_posted(postcard_data)
     except Exception as e:
         if ("Limit of free postcards exceeded." in str(e)):
@@ -27,8 +28,8 @@ def run():
 def handle_cooldown(e):
     time_string = re.findall(r"([0-9]{2}:[0-9]{2}:[0-9]{2})", str(e))[0]
     print(e, "le'me schedule and come back, okay?")
-    scheduled_run.at(time_string)
-    print(scheduled_run)
+    schedule.clear('run')
+    print(schedule.every().day.at(time_string).do(run).tag('run'))
 
 def login():
     token = Token()
@@ -84,9 +85,7 @@ def mark_postcard_as_posted(postcard):
     print(response)
 
 
-scheduled_run = schedule.every().day.do(run)
-scheduled_run.run()
-print(scheduled_run)
+run()
 
 while True:
     schedule.run_pending()
