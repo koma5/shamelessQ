@@ -6,7 +6,7 @@ services:
       restart: always
 
   postcardsatrest:
-    image: couchdb
+    build: postcardsatrest
     ports:
         - "5984:5984"
     restart: always
