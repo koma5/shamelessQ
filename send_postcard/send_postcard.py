@@ -3,6 +3,10 @@ import schedule, time, re, json, requests, os
 
 couchdb_database = 'http://192.168.1.3:5984/postcards/'
 
+os.environ['TZ'] = 'UTC'
+time.tzset()
+print("setting timezone to UTC: " + time.strftime('%H:%M:%S%z'))
+
 def run():
     token = login()
     postcard_data = get_next_postcard()
