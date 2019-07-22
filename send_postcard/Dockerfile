@@ -7,4 +7,4 @@ RUN pip install --no-cache -r requirements.txt
 
 COPY * ./
 
-CMD [ "python", "./send_postcard.py" ]
+CMD [ "python", "-u", "./send_postcard.py" ]

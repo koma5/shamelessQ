@@ -1,5 +1,10 @@
 version: "3"
 services:
+  sendpostcard:
+      build: send_postcard
+      env_file: send_postcard/secret.txt
+      restart: always
+
   postcardsatrest:
     image: couchdb
     ports:

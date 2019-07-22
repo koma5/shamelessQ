@@ -6,5 +6,5 @@ docker build -t sendpostcard  .
 
 # run
 ```
-docker run --env-file secret.txt sendpostcard
+docker run -d --env-file secret.txt sendpostcard
 ```
