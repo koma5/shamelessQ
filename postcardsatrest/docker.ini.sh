@@ -6,6 +6,7 @@ enable_cors = true
 
 [cors]
 origins = *
+credentials = true
 
 [admins]
 admin = ${ADMINPASSWORD}
