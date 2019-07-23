@@ -1,5 +1,6 @@
 from postcard_creator.postcard_creator import PostcardCreator, Postcard, Token, Recipient, Sender
 import schedule, time, re, json, requests, os
+from io import BytesIO
 
 couchdb_database = 'http://192.168.1.3:5984/postcards/'
 couchdb_auth=(os.environ['COUCHDBUSER'], os.environ['COUCHDBPASSWORD'])
@@ -15,7 +16,7 @@ def run():
     postcard = create_postcard(postcard_data, picture)
     try:
         send_postcard(postcard, token)
-        schuedule.clear('run')
+        schedule.clear('run')
         print(schedule.every().day.at(time.strftime('%H:%M:%S')).do(run).tag('run'))
         mark_postcard_as_posted(postcard_data)
     except Exception as e:
@@ -75,7 +76,7 @@ def get_next_postcard():
 def get_postcard_picture(postcard):
     attachment_id = list(postcard['_attachments'].keys())[0]
     response = requests.get(couchdb_database + postcard['_id'] + '/' + attachment_id, auth=couchdb_auth)
-    return response.content
+    return BytesIO(response.content)
 
 def mark_postcard_as_posted(postcard):
     print(postcard)
