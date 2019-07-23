@@ -10,10 +10,10 @@ time.tzset()
 print("setting timezone to UTC: " + time.strftime('%H:%M:%S%z'))
 
 def run():
-    token = login()
     postcard_data = get_next_postcard()
     picture = get_postcard_picture(postcard_data)
     postcard = create_postcard(postcard_data, picture)
+    token = login()
     try:
         send_postcard(postcard, token)
         schedule.clear('run')
