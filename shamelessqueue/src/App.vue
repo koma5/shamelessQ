@@ -28,7 +28,10 @@ export default {
         sync() {
             if(this.syncHandle) this.syncHandle.cancel()
             var database_auth = JSON.parse(window.localStorage.getItem('database_auth'))
-            this.syncHandle = this.$pouch.sync('http://' + database_auth.username + ':' + database_auth.password + '@' + database_auth.couchdburl.replace('http://', ''))
+
+            this.$pouch.connect(database_auth.username, database_auth.password, database_auth.couchdburl)
+            this.syncHandle = this.$pouch.sync(database_auth.couchdburl)
+
         },
         editDone() {
             this.loginForm = !this.loginForm
