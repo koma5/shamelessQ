@@ -17,7 +17,9 @@ def run():
     try:
         send_postcard(postcard, token)
         schedule.clear('run')
-        schedule.every().day.at(time.strftime('%H:%M:%S')).do(run).tag('run')
+        next_run = time.strftime('%H:%M:%S')
+        schedule.every().day.at(next_run).do(run).tag('run')
+        print("next: ", next_run) 
         mark_postcard_as_posted(postcard_data)
     except Exception as e:
         if ("Limit of free postcards exceeded." in str(e)):
@@ -31,6 +33,7 @@ def handle_cooldown(e):
     print(e, "le'me schedule and come back, okay?")
     schedule.clear('run')
     schedule.every().day.at(time_string).do(run).tag('run')
+    print("next: ", time_string)
 
 def login():
     token = Token()
@@ -71,7 +74,13 @@ def get_next_postcard():
     data = json.dumps({"selector": {"posted":False}})
     response = requests.post(couchdb_database + '_find', headers={"content-type":"application/json"}, data=data, auth=couchdb_auth)
     result = json.loads(response.content.decode('utf-8'))
-    return result['docs'][0]
+    try:
+        return result['docs'][0]
+    except IndexError:
+        print("Queue is empty. Shame on you, queue should never be empty!!")
+        time.sleep(60)
+        quit(1)
+
 
 def get_postcard_picture(postcard):
     attachment_id = list(postcard['_attachments'].keys())[0]
