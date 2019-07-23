@@ -21,15 +21,11 @@ export default {
     data() {
         return {
             newPostcard: false,
-            database_auth: JSON.parse(window.localStorage.getItem('database_auth'))
         }
     },
     pouch: {
         postcards: { posted: false }
     },
-    created() {
-        this.$pouch.sync('http://' + this.database_auth.username + ':' + this.database_auth.password + '@127.0.0.1:5984/postcards')
-    }, 
     components: {
         PostcardPreview,
         PostcardEditForm
