@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <Login @editDone="sync" />
+    <button @click="loginForm = true" v-if="!loginForm">login</button>
+    <Login @editDone="editDone" v-if="loginForm" />
     <Queue />
   </div>
 </template>
@@ -13,7 +14,8 @@ export default {
     name: 'app',
     data() {
         return {
-            syncHandle: null
+            syncHandle: null,
+            loginForm: false
         }
     },
     components: {
@@ -27,6 +29,10 @@ export default {
             if(this.syncHandle) this.syncHandle.cancel()
             var database_auth = JSON.parse(window.localStorage.getItem('database_auth'))
             this.syncHandle = this.$pouch.sync('http://' + database_auth.username + ':' + database_auth.password + '@' + database_auth.couchdburl.replace('http://', ''))
+        },
+        editDone() {
+            this.loginForm = !this.loginForm
+            this.sync()
         }
     }
 }
