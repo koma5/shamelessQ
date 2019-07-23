@@ -2,7 +2,7 @@ from postcard_creator.postcard_creator import PostcardCreator, Postcard, Token, 
 import schedule, time, re, json, requests, os
 from io import BytesIO
 
-couchdb_database = 'http://192.168.1.3:5984/postcards/'
+couchdb_database = os.environ['COUCHDBURL']
 couchdb_auth=(os.environ['COUCHDBUSER'], os.environ['COUCHDBPASSWORD'])
 
 os.environ['TZ'] = 'UTC'
@@ -17,7 +17,7 @@ def run():
     try:
         send_postcard(postcard, token)
         schedule.clear('run')
-        print(schedule.every().day.at(time.strftime('%H:%M:%S')).do(run).tag('run'))
+        schedule.every().day.at(time.strftime('%H:%M:%S')).do(run).tag('run')
         mark_postcard_as_posted(postcard_data)
     except Exception as e:
         if ("Limit of free postcards exceeded." in str(e)):
@@ -30,7 +30,7 @@ def handle_cooldown(e):
     time_string = re.findall(r"([0-9]{2}:[0-9]{2}:[0-9]{2})", str(e))[0]
     print(e, "le'me schedule and come back, okay?")
     schedule.clear('run')
-    print(schedule.every().day.at(time_string).do(run).tag('run'))
+    schedule.every().day.at(time_string).do(run).tag('run')
 
 def login():
     token = Token()
