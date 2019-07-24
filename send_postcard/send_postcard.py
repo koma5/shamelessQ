@@ -14,6 +14,7 @@ def run():
     picture = get_postcard_picture(postcard_data)
     postcard = create_postcard(postcard_data, picture)
     token = login()
+    time.sleep(5)
     try:
         send_postcard(postcard, token)
         schedule.clear('run')
