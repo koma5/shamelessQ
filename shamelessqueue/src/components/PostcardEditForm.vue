@@ -23,7 +23,8 @@
             <input v-model="message" type="text"></label>
         
         <button @click="save">save</button><button @click="cancel">cancel</button>
-        <croppa v-model="postcardCroppa"></croppa>
+        <croppa v-model="postcardCroppa" :width="420" :height="298" :quality="4" :prevent-white-space="true"></croppa>
+        <button @click="rotate">rotate</button>
     </form>
   </div>
 </template>
@@ -36,13 +37,12 @@ export default {
     props: ['postcard'],
     data() {
         return {
-            //if porp unpack
-            //"_id": uniqid(),
             postcardCroppa: {},
             id: uniqid(),
             recipient: {},
             sender: {},
             message: null,
+            //portrait: false
         }
     },
     methods: {
@@ -70,6 +70,14 @@ export default {
         },
         cancel() {
             this.$emit("editDone")
+        },
+        rotate() {
+            var width = this.postcardCroppa.width
+            var height = this.postcardCroppa.height
+            this.postcardCroppa.width = height
+            this.postcardCroppa.height = width
+
+            //this.portrait = !this.portrait
         }
     }
 }
