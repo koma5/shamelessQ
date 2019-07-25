@@ -3,6 +3,7 @@
     <ul>
         <li v-for="postcard in postcards" v-bind:key="postcard._id">
             <PostcardPreview v-bind:postcard="postcard"/>
+            <button @click="remove(postcard)">delete</button>
         </li>
         <li>
             <PostcardEditForm @editDone="toggleEdit" v-if="newPostcard" />
@@ -34,6 +35,9 @@ export default {
         toggleEdit() {
             this.newPostcard = !this.newPostcard;
         },
+        remove(postcard) {
+            this.$pouch.remove(postcard);
+        }
     }
 }
 </script>
