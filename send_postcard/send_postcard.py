@@ -1,4 +1,4 @@
-from postcard_creator.postcard_creator import PostcardCreator, Postcard, Token, Recipient, Sender
+from postcard_creator.postcard_creator import PostcardCreator, Postcard, Token, Recipient, Sender, PostcardCreatorException
 import schedule, time, re, json, requests, os
 from io import BytesIO
 
@@ -14,19 +14,21 @@ def run():
     picture = get_postcard_picture(postcard_data)
     postcard = create_postcard(postcard_data, picture)
     token = login()
-    time.sleep(5)
+    time.sleep(2)
     try:
         send_postcard(postcard, token)
         schedule.clear('run')
         next_run = time.strftime('%H:%M:%S')
         schedule.every().day.at(next_run).do(run).tag('run')
-        print("next: ", next_run) 
+        print("next: ", next_run)
         mark_postcard_as_posted(postcard_data)
-    except Exception as e:
+    except PostcardCreatorException as e:
         if ("Limit of free postcards exceeded." in str(e)):
             handle_cooldown(e)
         else:
             print(e)
+
+
 
 
 def handle_cooldown(e):
@@ -90,7 +92,7 @@ def get_postcard_picture(postcard):
 
 def mark_postcard_as_posted(postcard):
     print(postcard)
-    postcard['posted'] = True
+    postcard['posted'] = time.strftime('%FT%TZ')
     data = json.dumps(postcard)
     response = requests.put(couchdb_database + postcard['_id'], headers={"content-type":"application/json"}, data=data, auth=couchdb_auth)
     print(response)
