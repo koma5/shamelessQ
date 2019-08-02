@@ -2,12 +2,13 @@
   <div class="hello">
     <ul>
         <li v-for="postcard in postcards" v-bind:key="postcard._id">
-            <PostcardPreview v-bind:postcard="postcard"/>
+            <PostcardPreview v-bind:postcard="postcard" v-if="currentEdit !== postcard" />
             <button @click="remove(postcard)">delete</button>
+            <button @click="edit(postcard)">edit</button>
         </li>
         <li>
-            <PostcardEditForm @editDone="toggleEdit" v-if="newPostcard" />
-            <button @click="toggleEdit">new</button>
+            <PostcardEditForm @editDone="toggleEditForm" v-if="editForm" postcard="currentEdit"/>
+            <button @click="toggleEditForm">new</button>
         </li>
     </ul>
   </div>
@@ -21,7 +22,8 @@ export default {
 	name: 'Queue',
     data() {
         return {
-            newPostcard: false,
+            editForm: false,
+            currentEdit: null
         }
     },
     pouch: {
@@ -32,11 +34,15 @@ export default {
         PostcardEditForm
     },
     methods: {
-        toggleEdit() {
-            this.newPostcard = !this.newPostcard;
+        toggleEditForm() {
+            this.editForm = !this.editForm;
         },
         remove(postcard) {
             this.$pouch.remove(postcard);
+        },
+        edit(postcard) {
+            this.currentEdit = postcard;
+            this.toggleEditForm();
         }
     }
 }

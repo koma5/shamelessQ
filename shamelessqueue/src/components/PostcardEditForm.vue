@@ -36,13 +36,18 @@ export default {
 	name: 'PostcardEditForm',
     props: ['postcard'],
     data() {
-        return {
-            postcardCroppa: {},
-            id: uniqid(),
-            recipient: {},
-            sender: {},
-            message: null,
-            //portrait: false
+        if(postcard) {
+            return postcard
+        }
+        else {
+            return {
+                postcardCroppa: {},
+                id: uniqid(),
+                recipient: {},
+                sender: {},
+                message: null,
+                //portrait: false
+            }
         }
     },
     methods: {
