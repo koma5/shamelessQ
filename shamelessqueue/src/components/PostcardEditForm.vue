@@ -44,7 +44,7 @@ export default {
             id: uniqid(),
             recipient: {},
             sender: {},
-            message: null,
+            message: '',
             //portrait: false
         }
     },
