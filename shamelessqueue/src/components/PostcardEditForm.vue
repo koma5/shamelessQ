@@ -23,7 +23,7 @@
             <input v-model="message" type="text"></label>
         
         <button @click="save">save</button><button @click="cancel">cancel</button>
-        <croppa v-model="postcardCroppa" :width="420" :height="298" :quality="4" :prevent-white-space="true"></croppa>
+        <croppa v-model="postcardCroppa" v-bind:width="postcardCroppa.width" v-bind:height="postcardCroppa.height" :quality="4" :prevent-white-space="true"></croppa>
         <button @click="rotate">rotate</button>
     </form>
   </div>
@@ -37,7 +37,10 @@ export default {
     props: ['postcard'],
     data() {
         return {
-            postcardCroppa: {},
+            postcardCroppa: {
+                width: 420,
+                height: 298
+            },
             id: uniqid(),
             recipient: {},
             sender: {},
