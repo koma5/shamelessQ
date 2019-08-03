@@ -5,15 +5,15 @@
         <label>first name<input v-model="p.recipient.firstname" type="text"></label>
         <label>last name <input v-model="p.recipient.lastname" type="text"></label>
         <label>street<input v-model="p.recipient.address" type="text"></label>
-        <label>city<input v-model="p.recipient.city" type="text"></label>
         <label>postcode<input v-model="p.recipient.postcode" type="text"> </label>
+        <label>city<input v-model="p.recipient.city" type="text"></label>
 
         sender
         <label>first name <input v-model="p.sender.firstname" type="text"></label>
         <label>last name <input v-model="p.sender.lastname" type="text"></label>
         <label>address <input v-model="p.sender.address" type="text"></label>
-        <label>city <input v-model="p.sender.city" type="text"></label>
         <label>postcode <input v-model="p.sender.postcode" type="text"></label>
+        <label>city <input v-model="p.sender.city" type="text"></label>
 
         <label>message <input v-model="p.message" type="text"></label>
 
@@ -21,8 +21,9 @@
         <button @click="saveExisting" v-if="postcard">save</button>
 
         <button @click="cancel">cancel</button>
-        <croppa v-model="postcardCroppa" v-bind:width="postcardCroppa.width" v-bind:height="postcardCroppa.height" :quality="4" :prevent-white-space="true"></croppa>
-        <button @click="rotate">rotate</button>
+
+        <croppa v-if="!postcard" v-model="postcardCroppa" v-bind:width="postcardCroppa.width" v-bind:height="postcardCroppa.height" :quality="4" :prevent-white-space="true"></croppa>
+        <button v-if="!postcard" @click="rotate">rotate</button>
     </form>
   </div>
 </template>
@@ -44,6 +45,7 @@ export default {
                 recipient: {},
                 sender: {},
                 message: '',
+                posted: false
             }
         }
         if (this.postcard) {
@@ -56,7 +58,7 @@ export default {
 
             this.$pouch.put({
                 _id: this.p._id,
-                posted: false,
+                posted: this.p.posted,
                 sender: this.p.sender,
                 recipient: this.p.recipient,
                 message: this.p.message,
@@ -64,8 +66,8 @@ export default {
 
                 this.postcardCroppa.generateBlob(blob => {
                     this.$pouch.putAttachment(
-                        this.p.id,
-                        response.p.rev,
+                        this.p._id,
+                        response.rev,
                         {id: 'postcard.jpeg', data: blob, type: 'image/jpeg'}).catch(() => {});
                 }, 'image/jpeg',0.8);
 
