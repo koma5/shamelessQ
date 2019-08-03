@@ -5,19 +5,15 @@
         <label>first name<input v-model="recipient.firstname" type="text"></label>
         <label>last name <input v-model="recipient.lastname" type="text"></label>
         <label>street<input v-model="recipient.address" type="text"></label>
-        <label>city<input v-model="recipient.city" type="text"></label>
         <label>postcode<input v-model="recipient.postcode" type="text"> </label>
+        <label>city<input v-model="recipient.city" type="text"></label>
+
         sender
-        <label>first
-            <input v-model="sender.firstname" type="text"></label>
-        <label>last
-            <input v-model="sender.lastname" type="text"></label>
-        <label>address
-            <input v-model="sender.address" type="text"></label>
-        <label>city
-            <input v-model="sender.city" type="text"></label>
-        <label>postcode
-            <input v-model="sender.postcode" type="text"></label>
+        <label>first name <input v-model="sender.firstname" type="text"></label>
+        <label>last name  <input v-model="sender.lastname" type="text"></label>
+        <label>address <input v-model="sender.address" type="text"></label>
+        <label>postcode <input v-model="sender.postcode" type="text"></label>
+        <label>city <input v-model="sender.city" type="text"></label>
 
         <label>message
             <input v-model="message" type="text"></label>
@@ -36,29 +32,28 @@ export default {
 	name: 'PostcardEditForm',
     props: ['postcard'],
     data() {
-        if(postcard) {
-            return postcard
+        var mydata = {
+            postcardCroppa: {},
+            id: uniqid(),
+            recipient: {},
+            posted: false,
+            sender: {},
+            message: null,
         }
-        else {
-            return {
-                postcardCroppa: {},
-                id: uniqid(),
-                recipient: {},
-                sender: {},
-                message: null,
-                //portrait: false
-            }
+        if (this.postcard) {
+            Object.assign(mydata, this.postcard)
         }
+        return mydata
     },
     methods: {
-        save() {
+        saveNew() {
 
             this.$pouch.put({
                 _id: this.id,
-                posted: false,
                 sender: this.sender,
                 recipient: this.recipient,
                 message: this.message,
+                posted: this.posted
             }).then((response) => {
 
                 this.postcardCroppa.generateBlob(blob => {
@@ -72,6 +67,9 @@ export default {
             
 
             this.$emit("editDone")
+        },
+        saveExisting {
+            this.$pouch.put()
         },
         cancel() {
             this.$emit("editDone")
