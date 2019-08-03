@@ -5,8 +5,8 @@
             <PostcardPreview v-bind:postcard="postcard" v-if="currentEdit !== postcard"/>
             <PostcardEditForm v-bind:postcard="currentEdit" v-if="currentEdit == postcard" @editDone="toggleEdit"/>
 
-            <button @click="remove(postcard)">delete</button>
-            <button @click="toggleEdit(postcard)">edit</button>
+            <button @click="remove(postcard)" v-if="currentEdit !== postcard">delete</button>
+            <button @click="toggleEdit(postcard)" v-if="currentEdit !== postcard">edit</button>
         </li>
         <li>
             <PostcardNewForm @editDone="toggleNewPostcard" v-if="newPostcard" />

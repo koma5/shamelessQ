@@ -16,7 +16,7 @@
         <label>postcode <input v-model="sender.postcode" type="text"></label>
 
         <label>message <input v-model="message" type="text"></label>
-        
+
         <button @click="save">save</button><button @click="cancel">cancel</button>
         <croppa v-model="postcardCroppa" v-bind:width="postcardCroppa.width" v-bind:height="postcardCroppa.height" :quality="4" :prevent-white-space="true"></croppa>
         <button @click="rotate">rotate</button>
@@ -60,7 +60,6 @@ export default {
                 }, 'image/jpeg',0.8);
 
             });
-            
 
             this.$emit("editDone")
         },
