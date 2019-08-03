@@ -16,23 +16,64 @@
         <label>postcode <input v-model="p.sender.postcode" type="text"></label>
 
         <label>message <input v-model="p.message" type="text"></label>
-        
-        <button @click="save">save</button><button @click="cancel">cancel</button>
+
+        <button @click="saveNew" v-if="!postcard">save</button>
+        <button @click="saveExisting" v-if="postcard">save</button>
+
+        <button @click="cancel">cancel</button>
+        <croppa v-model="postcardCroppa" v-bind:width="postcardCroppa.width" v-bind:height="postcardCroppa.height" :quality="4" :prevent-white-space="true"></croppa>
+        <button @click="rotate">rotate</button>
     </form>
   </div>
 </template>
 
 <script>
+import uniqid from 'uniqid'
+
 export default {
-	name: 'PostcardEditForm',
+	name: 'PostcardNewForm',
     props: ['postcard'],
     data() {
-        return {
-            p: this.postcard
+        var mydata = {
+            postcardCroppa: {
+                width: 420,
+                height: 298
+            },
+            p: {
+                _id: uniqid(),
+                recipient: {},
+                sender: {},
+                message: '',
+            }
         }
+        if (this.postcard) {
+           Object.assign(mydata.p, this.postcard) 
+        }
+        return mydata
     },
     methods: {
-        save() {
+        saveNew() {
+
+            this.$pouch.put({
+                _id: this.p._id,
+                posted: false,
+                sender: this.p.sender,
+                recipient: this.p.recipient,
+                message: this.p.message,
+            }).then((response) => {
+
+                this.postcardCroppa.generateBlob(blob => {
+                    this.$pouch.putAttachment(
+                        this.p.id,
+                        response.p.rev,
+                        {id: 'postcard.jpeg', data: blob, type: 'image/jpeg'}).catch(() => {});
+                }, 'image/jpeg',0.8);
+
+            });
+
+            this.$emit("editDone")
+        },
+        saveExisting() {
             this.$pouch.put(this.p).then(() => {});
 
             this.$emit("editDone")
@@ -40,6 +81,12 @@ export default {
         cancel() {
             this.$emit("editDone")
         },
+        rotate() {
+            var width = this.postcardCroppa.width
+            var height = this.postcardCroppa.height
+            this.postcardCroppa.width = height
+            this.postcardCroppa.height = width
+        }
     }
 }
 </script>

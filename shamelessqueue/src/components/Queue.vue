@@ -9,7 +9,7 @@
             <button @click="toggleEdit(postcard)" v-if="currentEdit !== postcard">edit</button>
         </li>
         <li>
-            <PostcardNewForm @editDone="toggleNewPostcard" v-if="newPostcard" />
+            <PostcardEditForm @editDone="toggleNewPostcard" v-if="newPostcard" />
             <button @click="toggleNewPostcard">new</button>
         </li>
     </ul>
@@ -19,7 +19,6 @@
 <script>
 import PostcardPreview from './PostcardPreview.vue'
 import PostcardEditForm from './PostcardEditForm.vue'
-import PostcardNewForm from './PostcardNewForm.vue'
 
 export default {
 	name: 'Queue',
@@ -34,8 +33,7 @@ export default {
     },
     components: {
         PostcardPreview,
-        PostcardEditForm,
-        PostcardNewForm
+        PostcardEditForm
     },
     methods: {
         toggleNewPostcard() {
