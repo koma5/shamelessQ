@@ -1,7 +1,7 @@
 <template>
-  <div class="postcard">
-    <img @load="checkPortrait($event)" v-if="img" v-bind:src="img" alt="postcard" :class="{forcelandscape: isPortrait}">
-    {{ postcard }}
+  <div class="postcard" @click="flipBackside()">
+    <img @load="checkPortrait($event)" @click="" v-if="img && !backside" v-bind:src="img" alt="postcard" :class="{forcelandscape: isPortrait}">
+    <p v-if="backside">{{ postcard }}</p>
   </div>
 </template>
 
@@ -12,7 +12,8 @@ export default {
     data() {
         return {
             img: null,
-            isPortrait: false
+            isPortrait: false,
+            backside: false
         }
     },
     mounted() {
@@ -35,6 +36,9 @@ export default {
         checkPortrait(event) {
             var image = event.target
             this.isPortrait = image.naturalWidth < image.naturalHeight
+        },
+        flipBackside() {
+            this.backside = !this.backside;
         }
     }
     
