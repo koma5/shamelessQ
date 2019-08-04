@@ -5,18 +5,22 @@ from io import BytesIO
 couchdb_database = os.environ['COUCHDBURL']
 couchdb_auth=(os.environ['COUCHDBUSER'], os.environ['COUCHDBPASSWORD'])
 
+safety_delay = 0
+
 os.environ['TZ'] = 'UTC'
 time.tzset()
 print("setting timezone to UTC: " + time.strftime('%H:%M:%S%z'))
 
 def run():
+    global safety_delay
     postcard_data = get_next_postcard()
     picture = get_postcard_picture(postcard_data)
     postcard = create_postcard(postcard_data, picture)
     token = login()
-    time.sleep(2)
+    time.sleep(safety_delay)
     try:
-        send_postcard(postcard, token)
+        response = send_postcard(postcard, token)
+        print(response)
         schedule.clear('run')
         next_run = time.strftime('%H:%M:%S')
         schedule.every().day.at(next_run).do(run).tag('run')
@@ -27,6 +31,8 @@ def run():
             handle_cooldown(e)
         else:
             print(e)
+
+    safety_delay = 33
 
 
 
@@ -45,8 +51,9 @@ def login():
     return token
 
 def send_postcard(postcard, token, mock=False):
+    print('send postcard')
     w = PostcardCreator(token)
-    w.send_free_card(postcard=postcard, mock_send=mock)
+    return w.send_free_card(postcard=postcard, mock_send=mock)
 
 def create_postcard(postcard, picture):
 
@@ -91,6 +98,7 @@ def get_postcard_picture(postcard):
     return BytesIO(response.content)
 
 def mark_postcard_as_posted(postcard):
+    print("timestamp posted postcard")
     print(postcard)
     postcard['posted'] = time.strftime('%FT%TZ')
     data = json.dumps(postcard)
