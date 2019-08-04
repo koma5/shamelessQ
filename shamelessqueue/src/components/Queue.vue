@@ -1,6 +1,6 @@
 <template>
-  <div class="hello">
-    <ul>
+  <div>
+    <ul id="queue">
         <li v-for="postcard in postcards" v-bind:key="postcard._id">
             <PostcardPreview v-bind:postcard="postcard" v-if="currentEdit !== postcard"/>
             <PostcardEditForm v-bind:postcard="currentEdit" v-if="currentEdit == postcard" @editDone="toggleEdit"/>
@@ -54,5 +54,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+ul#queue {
+    list-style-type: none;
+}
+
 </style>

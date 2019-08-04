@@ -1,8 +1,8 @@
 <template>
-  <div class="postcard" @click="flipBackside()">
-    <img @load="checkPortrait($event)" @click="" v-if="img && !backside" v-bind:src="img" alt="postcard" :class="{forcelandscape: isPortrait}">
+  <section class="postcard" @click="flipBackside()">
+    <img @load="checkPortrait($event)" v-if="img && !backside" v-bind:src="img" alt="postcard" :class="{forcelandscape: isPortrait}">
     <p v-if="backside">{{ postcard }}</p>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -45,13 +45,21 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+section.postcard {
+    width: 500px;
+    height: 354.75px;
+}
 img {
     width:500px;
 }
+
 img.forcelandscape {
-    transform: rotate(90deg);
+    transform: rotate(-90deg);
     height:500px;
     width: unset;
+    position: relative;
+    top: 354.75px;
+    top: -72.625px; /* (500-354.75)/2 */
 }
 </style>
