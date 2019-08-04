@@ -1,6 +1,6 @@
 <template>
   <div class="postcard">
-    <img v-if="img" v-bind:src="img" alt="">
+    <img @load="checkPortrait($event)" v-if="img" v-bind:src="img" alt="postcard" :class="{forcelandscape: isPortrait}">
     {{ postcard }}
   </div>
 </template>
@@ -11,7 +11,8 @@ export default {
     props: ['postcard'],
     data() {
         return {
-            img: null
+            img: null,
+            isPortrait: false
         }
     },
     mounted() {
@@ -30,6 +31,10 @@ export default {
                         this.img = URL.createObjectURL(blob)
                     })
             }
+        },
+        checkPortrait(event) {
+            var image = event.target
+            this.isPortrait = image.naturalWidth < image.naturalHeight
         }
     }
     
@@ -39,5 +44,10 @@ export default {
 <style scoped>
 img {
     width:500px;
+}
+img.forcelandscape {
+    transform: rotate(90deg);
+    height:500px;
+    width: unset;
 }
 </style>
