@@ -1,7 +1,7 @@
 <template>
   <section class="postcard" @click="flipBackside()">
-    <img @load="checkPortrait($event)" v-if="img && !backside" v-bind:src="img" alt="postcard" :class="{forcelandscape: isPortrait}">
-    <p v-if="backside">{{ postcard }}</p>
+    <img @load="checkPortrait($event)" v-show="img && !backside" v-bind:src="img" alt="postcard" :class="{forcelandscape: isPortrait}">
+    <p v-show="backside">{{ postcard }}</p>
   </section>
 </template>
 
