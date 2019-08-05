@@ -3,7 +3,7 @@
     <img @load="checkPortrait($event)" v-show="img && !backside" v-bind:src="img" alt="postcard" :class="{forcelandscape: isPortrait}">
 
     <section class="backside" v-show="backside">
-        <p>{{ postcard.message }}</p>
+        <p class="message">{{ postcard.message }}</p>
 
         <address class="sender">
             {{ postcard.sender.firstname }} {{ postcard.sender.lastname }},
@@ -80,9 +80,13 @@ img.forcelandscape {
     top: 354.75px;
     top: -72.625px; /* (500-354.75)/2 */
 }
-section.postcard address, section.postcard p {
+section.postcard address, p.message {
     font-style: normal;
     text-align: left;
+}
+
+p.message {
+    word-break: break-all;
 }
 
 address.sender {
