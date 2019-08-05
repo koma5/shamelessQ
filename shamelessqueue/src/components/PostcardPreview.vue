@@ -1,7 +1,25 @@
 <template>
   <section class="postcard" @click="flipBackside()">
     <img @load="checkPortrait($event)" v-show="img && !backside" v-bind:src="img" alt="postcard" :class="{forcelandscape: isPortrait}">
-    <p v-show="backside">{{ postcard }}</p>
+
+    <section class="backside" v-show="backside">
+        <p>{{ postcard.message }}</p>
+
+        <address class="sender">
+            {{ postcard.sender.firstname }} {{ postcard.sender.lastname }},
+            {{ postcard.sender.address }},
+            {{ postcard.sender.postcode }} {{ postcard.sender.city }}
+        </address>
+
+        <address class="recipient">
+            {{ postcard.recipient.firstname }} {{ postcard.recipient.lastname }} <br>
+            {{ postcard.recipient.address }} <br>
+            {{ postcard.recipient.postcode }} {{ postcard.recipient.city }} <br>
+        </address>
+
+
+    </section>
+
   </section>
 </template>
 
@@ -61,5 +79,33 @@ img.forcelandscape {
     position: relative;
     top: 354.75px;
     top: -72.625px; /* (500-354.75)/2 */
+}
+section.postcard address, section.postcard p {
+    font-style: normal;
+    text-align: left;
+}
+
+address.sender {
+    grid-area: sender;
+    font-size: 0.75em;
+    align-items: flex-end;
+}
+
+address.recipient {
+    grid-area: recipient;
+}
+
+section.backside {
+    width: 460px;
+    height: 314.75px;
+    border: 0.25px lightgray solid;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 3fr 4fr;
+    grid-template-rows: 0.9fr 0.2fr 1.9fr;
+    grid-gap: 10px;
+    grid-template-areas: "message ."
+                         "message sender"
+                         "message recipient";
 }
 </style>
