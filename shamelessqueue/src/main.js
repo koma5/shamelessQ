@@ -10,6 +10,7 @@ import pa from 'pouchdb-authentication'
 
 import Croppa from 'vue-croppa';
 import 'vue-croppa/dist/vue-croppa.css';
+import './registerServiceWorker'
 
 PouchDB.plugin(pf);
 PouchDB.plugin(plf);
