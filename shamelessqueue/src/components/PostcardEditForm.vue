@@ -30,10 +30,11 @@
 
 <script>
 import uniqid from 'uniqid'
+import mudder from 'mudder'
 
 export default {
 	name: 'PostcardNewForm',
-    props: ['postcard'],
+    props: ['postcard', 'lastPostcardOrder'],
     data() {
         var mydata = {
             postcardCroppa: {
@@ -45,7 +46,8 @@ export default {
                 recipient: {},
                 sender: {},
                 message: '',
-                posted: false
+                posted: false,
+                order: mudder.alphabet.mudder(this.lastPostcardOrder, 'z', 1)[0]
             }
         }
         if (this.postcard) {
@@ -62,6 +64,7 @@ export default {
                 sender: this.p.sender,
                 recipient: this.p.recipient,
                 message: this.p.message,
+                order: this.p.order
             }).then((response) => {
 
                 this.postcardCroppa.generateBlob(blob => {

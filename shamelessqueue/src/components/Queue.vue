@@ -11,7 +11,7 @@
             </li>
         </draggable>
         <li>
-            <PostcardEditForm @editDone="toggleNewPostcard" v-if="newPostcard" />
+            <PostcardEditForm @editDone="toggleNewPostcard" v-if="newPostcard" :lastPostcardOrder="lastPostcardOrder"/>
             <button @click="toggleNewPostcard">new</button>
         </li>
     </ul>
@@ -44,6 +44,18 @@ export default {
         PostcardPreview,
         PostcardEditForm,
         draggable,
+    },
+    computed: {
+        lastPostcardOrder: {
+            get: function() {
+                if (this.postcards.length > 0) {
+                    return this.postcards[this.postcards.length -1].order
+                }
+                else {
+                    return 'a'
+                }
+            }
+        }
     },
     methods: {
         toggleNewPostcard() {
