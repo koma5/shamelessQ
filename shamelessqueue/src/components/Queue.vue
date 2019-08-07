@@ -1,13 +1,15 @@
 <template>
   <div>
     <ul id="queue">
-        <li v-for="postcard in postcards" v-bind:key="postcard._id">
-            <PostcardPreview v-bind:postcard="postcard" v-if="currentEdit !== postcard"/>
-            <PostcardEditForm v-bind:postcard="currentEdit" v-if="currentEdit == postcard" @editDone="toggleEdit"/>
+        <draggable v-model="postcards" group="postcards" @start="drag=true" @end="drag=false" @change="orderChange($event)">
+            <li v-for="postcard in postcards" v-bind:key="postcard._id">
+                <PostcardPreview v-bind:postcard="postcard" v-if="currentEdit !== postcard"/>
+                <PostcardEditForm v-bind:postcard="currentEdit" v-if="currentEdit == postcard" @editDone="toggleEdit"/>
 
-            <button @click="remove(postcard)" v-if="currentEdit !== postcard">delete</button>
-            <button @click="toggleEdit(postcard)" v-if="currentEdit !== postcard">edit</button>
-        </li>
+                <button @click="remove(postcard)" v-if="currentEdit !== postcard">delete</button>
+                <button @click="toggleEdit(postcard)" v-if="currentEdit !== postcard">edit</button>
+            </li>
+        </draggable>
         <li>
             <PostcardEditForm @editDone="toggleNewPostcard" v-if="newPostcard" />
             <button @click="toggleNewPostcard">new</button>
@@ -19,6 +21,8 @@
 <script>
 import PostcardPreview from './PostcardPreview.vue'
 import PostcardEditForm from './PostcardEditForm.vue'
+import draggable from 'vuedraggable'
+import mudder from 'mudder'
 
 export default {
 	name: 'Queue',
@@ -29,11 +33,17 @@ export default {
         }
     },
     pouch: {
-        postcards: { posted: false }
+        postcards() {
+            return {
+                selector: { posted: false },
+                sort: [{"order": "asc"}]
+            }
+        }
     },
     components: {
         PostcardPreview,
-        PostcardEditForm
+        PostcardEditForm,
+        draggable,
     },
     methods: {
         toggleNewPostcard() {
@@ -48,6 +58,17 @@ export default {
             }
             else {
                 this.currentEdit = null
+            }
+        },
+        orderChange(event) {
+            if(event.moved) {
+                var element = event.moved.element
+                var newIndex = event.moved.newIndex
+                var postcardOrderBefore = (this.postcards[newIndex-1]) ? this.postcards[newIndex-1].order : 'a'
+                var postcardOrderAfter =  (this.postcards[newIndex+1]) ? this.postcards[newIndex+1].order : 'z'
+                var newOrder = mudder.alphabet.mudder(postcardOrderBefore, postcardOrderAfter, 1)
+                element.order = newOrder[0]
+                this.$pouch.put(element)
             }
         }
     }
