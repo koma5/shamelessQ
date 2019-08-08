@@ -81,9 +81,11 @@ def create_postcard(postcard, picture):
     return card
 
 def get_next_postcard():
-    data = json.dumps({"selector": {"posted":False}})
+    data = json.dumps({"selector": {"posted":False}, "sort":[{"order": "asc"}]})
     response = requests.post(couchdb_database + '_find', headers={"content-type":"application/json"}, data=data, auth=couchdb_auth)
     result = json.loads(response.content.decode('utf-8'))
+    if response.status_code != 200:
+        print(result)
     try:
         return result['docs'][0]
     except IndexError:
