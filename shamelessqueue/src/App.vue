@@ -30,8 +30,14 @@ export default {
             var database_auth = JSON.parse(window.localStorage.getItem('database_auth'))
 
             this.$pouch.connect(database_auth.username, database_auth.password, database_auth.couchdburl)
-            this.syncHandle = this.$pouch.sync(database_auth.couchdburl)
+            this.syncHandle = this.$pouch.sync(database_auth.couchdburl).on('error', this.handleSyncError)
 
+        },
+        handleSyncError(event) {
+            if(event && event.error == 'unauthorized') {
+                this.sync()
+                console.log("SyncError occured.")
+            }
         },
         editDone() {
             this.syncForm = !this.syncForm
