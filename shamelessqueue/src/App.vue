@@ -36,7 +36,6 @@ export default {
         handleSyncError(event) {
             if(event && event.error == 'unauthorized') {
                 this.sync()
-                console.log("SyncError occured.")
             }
         },
         editDone() {
