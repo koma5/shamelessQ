@@ -1,25 +1,25 @@
 <template>
   <div id="app">
-    <button @click="loginForm = true" v-if="!loginForm">login</button>
-    <Login @editDone="editDone" v-if="loginForm" />
+    <button @click="syncForm = true" v-if="!syncForm">sync</button>
+    <Sync @editDone="editDone" v-if="syncForm" />
     <Queue />
   </div>
 </template>
 
 <script>
 import Queue from './components/Queue.vue'
-import Login from './components/Login.vue'
+import Sync from './components/Sync.vue'
 
 export default {
     name: 'app',
     data() {
         return {
             syncHandle: null,
-            loginForm: false
+            syncForm: false
         }
     },
     components: {
-        Queue, Login
+        Queue, Sync
     },
     created() {
         this.sync()
@@ -34,7 +34,7 @@ export default {
 
         },
         editDone() {
-            this.loginForm = !this.loginForm
+            this.syncForm = !this.syncForm
             this.sync()
         }
     }

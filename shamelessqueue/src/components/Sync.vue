@@ -13,7 +13,7 @@
 <script>
 
 export default {
-	name: 'Login',
+	name: 'Sync',
     data() {
         var database_auth = {
             username: null,
@@ -43,4 +43,7 @@ export default {
 </script>
 
 <style scoped>
+    form label {
+        display: block;
+    }
 </style>
