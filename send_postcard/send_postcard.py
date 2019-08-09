@@ -58,7 +58,14 @@ def send_postcard(postcard, token, mock=False):
 def create_postcard(postcard, picture):
 
     rec = postcard['recipient']
+    company = rec['company'] if ('company' in rec.keys()) else ''
+    company_addition = rec['company_addition'] if ('company_addition' in rec.keys()) else ''
+    salutation = rec['salutation'] if ('salutation' in rec.keys()) else ''
+
     recipient = Recipient(
+        company=company,
+        company_addition=company_addition,
+        salutation=salutation,
         prename=rec['firstname'],
         lastname=rec['lastname'],
         street=rec['address'],
@@ -66,7 +73,11 @@ def create_postcard(postcard, picture):
         zip_code=rec['postcode'])
 
     sen = postcard['sender']
+    del company
+    company = sen['company'] if ('company' in sen.keys()) else ''
+
     sender = Sender(
+            company=company,
             prename=sen['firstname'],
             lastname=sen['lastname'],
             street=sen['address'],
