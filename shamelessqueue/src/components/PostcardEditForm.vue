@@ -2,6 +2,9 @@
   <div class="postcard">
     <form v-on:submit.prevent="">
         recipient
+        <label>company <input v-model="p.recipient.company" type="text"></label>
+        <label>company addition<input v-model="p.recipient.company_addition" type="text"></label>
+        <label>salutation<input v-model="p.recipient.salutation" type="text"></label>
         <label>first name<input v-model="p.recipient.firstname" type="text"></label>
         <label>last name <input v-model="p.recipient.lastname" type="text"></label>
         <label>street<input v-model="p.recipient.address" type="text"></label>
@@ -9,6 +12,7 @@
         <label>city<input v-model="p.recipient.city" type="text"></label>
 
         sender
+        <label>company <input v-model="p.sender.company" type="text"></label>
         <label>first name <input v-model="p.sender.firstname" type="text"></label>
         <label>last name <input v-model="p.sender.lastname" type="text"></label>
         <label>address <input v-model="p.sender.address" type="text"></label>

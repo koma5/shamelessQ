@@ -6,13 +6,15 @@
         <p class="message">{{ postcard.message }}</p>
 
         <address class="sender">
-            {{ postcard.sender.firstname }} {{ postcard.sender.lastname }},
+            {{postcard.sender.company}} {{ postcard.sender.firstname }} {{ postcard.sender.lastname }},
             {{ postcard.sender.address }},
             {{ postcard.sender.postcode }} {{ postcard.sender.city }}
         </address>
 
         <address class="recipient">
-            {{ postcard.recipient.firstname }} {{ postcard.recipient.lastname }} <br>
+            {{ postcard.recipient.company }} <br>
+            {{ postcard.recipient.company_addition }} <br>
+            {{ postcard.recipient.salutation }} {{ postcard.recipient.firstname }} {{ postcard.recipient.lastname }} <br>
             {{ postcard.recipient.address }} <br>
             {{ postcard.recipient.postcode }} {{ postcard.recipient.city }} <br>
         </address>
