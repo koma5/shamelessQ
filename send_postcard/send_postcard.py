@@ -58,9 +58,9 @@ def send_postcard(postcard, token, mock=False):
 def create_postcard(postcard, picture):
 
     rec = postcard['recipient']
-    company = rec['company'] if ('company' in rec.keys()) else None
-    company_addition = rec['company_addition'] if ('company_addition' in rec.keys()) else None
-    salutation = rec['salutation'] if ('salutation' in rec.keys()) else None
+    company = rec['company'] if ('company' in rec.keys()) else ''
+    company_addition = rec['company_addition'] if ('company_addition' in rec.keys()) else ''
+    salutation = rec['salutation'] if ('salutation' in rec.keys()) else ''
 
     recipient = Recipient(
         company=company,
@@ -74,7 +74,7 @@ def create_postcard(postcard, picture):
 
     sen = postcard['sender']
     del company
-    company = sen['company'] if ('company' in sen.keys()) else None
+    company = sen['company'] if ('company' in sen.keys()) else ''
 
     sender = Sender(
             company=company,
