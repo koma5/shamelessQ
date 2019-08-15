@@ -1,8 +1,9 @@
 <template>
   <div>
     <ul id="queue">
-        <draggable v-model="postcards" group="postcards" @start="drag=true" @end="drag=false" @change="orderChange($event)">
+        <draggable v-model="postcards" group="postcards" handle=".handle" @start="drag=true" @end="drag=false" @change="orderChange($event)">
             <li v-for="postcard in postcards" v-bind:key="postcard._id">
+                <i class="handle">M</i>
                 <PostcardPreview v-bind:postcard="postcard" v-if="currentEdit !== postcard"/>
                 <PostcardEditForm v-bind:postcard="currentEdit" v-if="currentEdit == postcard" @editDone="toggleEdit"/>
 
@@ -90,6 +91,9 @@ export default {
 <style>
 ul#queue {
     list-style-type: none;
+}
+.handle {
+  cursor: move;
 }
 
 </style>
