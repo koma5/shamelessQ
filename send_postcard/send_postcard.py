@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from postcard_creator.postcard_creator import PostcardCreator, Postcard, Token, Recipient, Sender, PostcardCreatorException
 import schedule, time, re, json, requests, os
 from io import BytesIO
