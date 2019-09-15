@@ -79,7 +79,7 @@ export default {
                 var newIndex = event.moved.newIndex
                 var postcardOrderBefore = (this.postcards[newIndex-1]) ? this.postcards[newIndex-1].order : 'a'
                 var postcardOrderAfter =  (this.postcards[newIndex+1]) ? this.postcards[newIndex+1].order : 'z'
-                var newOrder = mudder.alphabet.mudder(postcardOrderBefore, postcardOrderAfter, 1)
+                var newOrder = mudder.alphabet.mudder(postcardOrderBefore, postcardOrderAfter, 100)
                 element.order = newOrder[0]
                 this.$pouch.put(element)
             }

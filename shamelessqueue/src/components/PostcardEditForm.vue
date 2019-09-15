@@ -51,7 +51,7 @@ export default {
                 sender: {},
                 message: '',
                 posted: false,
-                order: mudder.alphabet.mudder(this.lastPostcardOrder, 'z', 1)[0]
+                order: mudder.alphabet.mudder(this.lastPostcardOrder, 'z', 100)[0]
             }
         }
         if (this.postcard) {
