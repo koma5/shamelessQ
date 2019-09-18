@@ -19,6 +19,11 @@
             {{ postcard.recipient.postcode }} {{ postcard.recipient.city }} <br>
         </address>
 
+        <div class="buttons">
+            <button @click="sendRemove()">delete</button>
+            <button @click="sendEdit()">edit</button>
+        </div>
+
 
     </section>
 
@@ -59,9 +64,15 @@ export default {
         },
         flipBackside() {
             this.backside = !this.backside;
+        },
+        sendEdit() {
+            this.$emit('edit');
+        },
+        sendRemove() {
+            this.$emit('remove');
         }
     }
-    
+
 }
 </script>
 
@@ -101,6 +112,17 @@ address.recipient {
     grid-area: recipient;
 }
 
+div.buttons {
+    grid-area: buttons;
+}
+
+div.buttons button {
+    height: 40px;
+    background-color: lightgray;
+    border:none;
+    margin-right: 10px;
+}
+
 section.backside {
     width: 460px;
     height: 314.75px;
@@ -110,7 +132,7 @@ section.backside {
     grid-template-columns: 3fr 4fr;
     grid-template-rows: 0.9fr 0.2fr 1.9fr;
     grid-gap: 10px;
-    grid-template-areas: "message ."
+    grid-template-areas: "message buttons"
                          "message sender"
                          "message recipient";
 }

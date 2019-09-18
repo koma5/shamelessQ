@@ -4,11 +4,9 @@
         <draggable v-model="postcards" group="postcards" handle=".handle" @start="drag=true" @end="drag=false" @change="orderChange($event)">
             <li v-for="postcard in postcards" v-bind:key="postcard._id">
                 <i class="handle">M</i>
-                <PostcardPreview v-bind:postcard="postcard" v-if="currentEdit !== postcard"/>
+                <PostcardPreview v-bind:postcard="postcard" v-if="currentEdit !== postcard" @edit="toggleEdit(postcard)" @remove="remove(postcard)" />
                 <PostcardEditForm v-bind:postcard="currentEdit" v-if="currentEdit == postcard" @editDone="toggleEdit"/>
 
-                <button @click="remove(postcard)" v-if="currentEdit !== postcard">delete</button>
-                <button @click="toggleEdit(postcard)" v-if="currentEdit !== postcard">edit</button>
             </li>
         </draggable>
         <li>
