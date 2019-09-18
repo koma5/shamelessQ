@@ -13,7 +13,7 @@
         </draggable>
         <li>
             <PostcardEditForm @editDone="toggleNewPostcard" v-if="newPostcard" :lastPostcardOrder="lastPostcardOrder"/>
-            <button @click="toggleNewPostcard">new</button>
+            <button class="new" @click="toggleNewPostcard">+</button>
         </li>
     </ul>
   </div>
@@ -94,6 +94,13 @@ ul#queue {
 }
 .handle {
   cursor: move;
+}
+button.new {
+    font-size: 7em;
+    background-color: white;
+    border:none;
+    width: 100px;
+    height: 100px;
 }
 
 </style>
