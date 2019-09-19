@@ -20,7 +20,8 @@
         </address>
 
         <div class="buttons">
-            <button @click="sendRemove()">delete</button>
+            <button @click.stop="sendRemove()" v-show="deletePresses == 0">delete</button>
+            <button @click="sendRemove()" v-show="deletePresses > 0" class="confirmDelete">really delete?</button>
             <button @click="sendEdit()">edit</button>
         </div>
 
@@ -38,7 +39,8 @@ export default {
         return {
             img: null,
             isPortrait: false,
-            backside: false
+            backside: false,
+            deletePresses: 0
         }
     },
     mounted() {
@@ -64,13 +66,19 @@ export default {
         },
         flipBackside() {
             this.backside = !this.backside;
+            this.deletePresses = 0;
         },
         sendEdit() {
             this.$emit('edit');
         },
         sendRemove() {
-            this.$emit('remove');
-        }
+            if (this.deletePresses > 0) {
+                this.$emit('remove');
+            }
+            else {
+                this.deletePresses++;
+            }
+        },
     }
 
 }
@@ -121,6 +129,12 @@ div.buttons button {
     background-color: lightgray;
     border:none;
     margin-right: 10px;
+    font-size: 1.2em;
+}
+
+div.buttons button.confirmDelete {
+    background-color: #f55a42;
+    color: white;
 }
 
 section.backside {
