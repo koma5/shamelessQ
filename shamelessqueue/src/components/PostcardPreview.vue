@@ -124,15 +124,7 @@ div.buttons {
     grid-area: buttons;
 }
 
-div.buttons button {
-    height: 40px;
-    background-color: lightgray;
-    border:none;
-    margin-right: 10px;
-    font-size: 1.2em;
-}
-
-div.buttons button.confirmDelete {
+button.confirmDelete {
     background-color: #f55a42;
     color: white;
 }
