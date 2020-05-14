@@ -1,0 +1,12 @@
+version: "3"
+services:
+  sendpostcard:
+      build: send_postcard
+      env_file: send_postcard/secret.txt
+      restart: always
+
+  postcardsatrest:
+    build: postcardsatrest
+    ports:
+        - "5984:5984"
+    restart: always
