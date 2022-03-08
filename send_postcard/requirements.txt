@@ -1,3 +1,3 @@
--e git+https://github.com/abertschi/postcard_creator_wrapper@8010f6759628bb999b09af4930bf3ce698f572d1#egg=postcard_creator_wrapper
+postcard_creator==2.2
 requests==2.22.0
 schedule==0.6.0
