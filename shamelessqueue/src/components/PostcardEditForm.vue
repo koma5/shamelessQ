@@ -42,8 +42,8 @@ export default {
     data() {
         var mydata = {
             postcardCroppa: {
-                width: 420,
-                height: 298
+                width: 455,
+                height: 328
             },
             p: {
                 _id: uniqid(),
