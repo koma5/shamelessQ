@@ -2,11 +2,13 @@
 from postcard_creator.postcard_creator import PostcardCreator, Postcard, Token, Recipient, Sender, PostcardCreatorException
 import schedule, time, re, json, requests, os
 from io import BytesIO
+import random
 
 couchdb_database = os.environ['COUCHDBURL']
 couchdb_auth=(os.environ['COUCHDBUSER'], os.environ['COUCHDBPASSWORD'])
 
 safety_delay = 0
+pick_postcard_at_random = True
 
 os.environ['TZ'] = 'UTC'
 time.tzset()
@@ -14,7 +16,7 @@ print("setting timezone to UTC: " + time.strftime('%H:%M:%S%z'))
 
 def run():
     global safety_delay
-    postcard_data = get_next_postcard()
+    postcard_data = get_postcard(pick_postcard_at_random)
     picture = get_postcard_picture(postcard_data)
     postcard = create_postcard(postcard_data, picture)
     token = login()
@@ -92,14 +94,17 @@ def create_postcard(postcard, picture):
 
     return card
 
-def get_next_postcard():
+def get_postcard(pick_postcard_at_random=False):
     data = json.dumps({"selector": {"posted":False}, "sort":[{"order": "asc"}]})
     response = requests.post(couchdb_database + '_find', headers={"content-type":"application/json"}, data=data, auth=couchdb_auth)
     result = json.loads(response.content.decode('utf-8'))
     if response.status_code != 200:
         print(result)
     try:
-        return result['docs'][0]
+        if pick_postcard_at_random:
+            return random.choice(result['docs'])
+        else:
+            return result['docs'][0]
     except IndexError:
         print("Queue is empty. Shame on you, queue should never be empty!!")
         time.sleep(60)
