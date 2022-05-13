@@ -10,9 +10,7 @@ couchdb_auth=(os.environ['COUCHDBUSER'], os.environ['COUCHDBPASSWORD'])
 safety_delay = 0
 pick_postcard_at_random = True
 
-os.environ['TZ'] = 'UTC'
-time.tzset()
-print("setting timezone to UTC: " + time.strftime('%H:%M:%S%z'))
+print("current time: " + time.strftime('%H:%M:%S%z'))
 
 def run():
     global safety_delay
