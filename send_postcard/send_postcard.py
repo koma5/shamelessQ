@@ -8,7 +8,7 @@ couchdb_database = os.environ['COUCHDBURL']
 couchdb_auth=(os.environ['COUCHDBUSER'], os.environ['COUCHDBPASSWORD'])
 
 safety_delay = 0
-pick_postcard_at_random = True
+pick_postcard_at_random = False
 
 print("current time: " + time.strftime('%H:%M:%S%z'))
 
