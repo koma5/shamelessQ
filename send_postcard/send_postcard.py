@@ -95,7 +95,7 @@ def create_postcard(postcard, picture):
     return card
 
 def get_postcard(pick_postcard_at_random=False):
-    data = json.dumps({"selector": {"posted":False}, "sort":[{"order": "asc"}]})
+    data = json.dumps({"selector": {"posted":False}, "sort":[{"order": "asc"}], limit=500})
     response = requests.post(couchdb_database + '_find', headers={"content-type":"application/json"}, data=data, auth=couchdb_auth)
     result = json.loads(response.content.decode('utf-8'))
     if response.status_code != 200:
